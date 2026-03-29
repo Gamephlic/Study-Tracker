@@ -3,206 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 10th Master Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Class 10 Study Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.95);
-            --study-blue: #4a90e2;
-            --study-dark: #2c3e50;
-            --success: #2ecc71;
-            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary: #6366f1;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-gradient);
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             margin: 0;
-            padding: 20px;
-            color: var(--study-dark);
+            padding: 10px; /* Reduced padding for mobile */
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 1100px;
-            margin: auto;
-            background: var(--glass-bg);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        header { text-align: center; margin-bottom: 30px; }
-        
-        /* Progress Grid */
-        .progress-grid {
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--primary);
+        }
+
+        /* Responsive Progress Section */
+        .progress-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
+            grid-template-columns: 1fr; /* Default 1 column for mobile */
+            gap: 10px;
+            margin-bottom: 25px;
         }
 
-        .progress-card {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        @media (min-width: 600px) {
+            .progress-section { grid-template-columns: 1fr 1fr; } /* 2 columns for tablets */
         }
 
-        .progress-card h4 { margin: 0 0 10px 0; font-size: 0.85rem; color: #555; }
-        
-        .bar-container {
-            background: #eee;
-            height: 10px;
-            border-radius: 5px;
+        .prog-card {
+            background: var(--card);
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .prog-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .bar-bg {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
             overflow: hidden;
         }
 
         .bar-fill {
-            background: var(--success);
+            background: var(--primary);
             height: 100%;
             width: 0%;
-            transition: width 0.5s ease;
+            transition: width 0.6s ease;
         }
 
-        .perc-text { font-size: 12px; font-weight: bold; margin-top: 5px; display: block; }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 25px;
+        /* Input Form */
+        .input-card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
-
-        .card { background: #fff; padding: 20px; border-radius: 15px; border: 1px solid #eee; }
 
         input, select {
-            width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
         }
 
-        .btn-add {
-            width: 100%; padding: 12px; background: var(--study-blue); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;
+        button.main-btn {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
         }
 
-        ul { list-style: none; padding: 0; }
-        li {
-            background: #f8f9fa; margin-bottom: 10px; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--study-blue);
+        /* List Section */
+        .list-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 700;
         }
 
-        .revised { border-left-color: var(--success); opacity: 0.7; }
-        .revised span { text-decoration: line-through; }
-
-        .btn-revise {
-            background: var(--success); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 11px;
+        .chapter-item {
+            background: var(--card);
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column; /* Stack on mobile */
+            gap: 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
-        .doubt-btn {
-            background: #e74c3c; color: white; padding: 15px 25px; border-radius: 50px; position: fixed; bottom: 20px; right: 20px; border: none; font-weight: bold; cursor: pointer;
+        @media (min-width: 480px) {
+            .chapter-item { flex-direction: row; justify-content: space-between; align-items: center; }
+        }
+
+        .chapter-info span {
+            display: block;
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .chapter-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-rev { background: #dcfce7; color: #166534; }
+        .btn-rev.done { background: var(--success); color: white; }
+        .btn-del { background: #fee2e2; color: #991b1b; }
+
+        .doubt-fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--danger);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+            border: none;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header><h1>📖 Class 10th Study Tracker</h1></header>
+    <header>
+        <h1>Class 10 Tracker</h1>
+    </header>
 
-    <div class="progress-grid" id="progressGrid">
-        </div>
+    <div class="progress-section" id="progressArea"></div>
 
-    <div class="main-grid">
-        <div class="card">
-            <h3>Log Chapter</h3>
-            <input type="text" id="chapterInput" placeholder="Chapter Name...">
-            <select id="bookInput">
-                <option value="Kshitij (Part 2)">Kshitij (Part 2)</option>
-                <option value="Kritika (Part 2)">Kritika (Part 2)</option>
-                <option value="Mathematics (NCERT)">Mathematics (NCERT)</option>
-                <option value="Science (NCERT)">Science (NCERT)</option>
-                <option value="History">History</option>
-                <option value="Geography">Geography</option>
-                <option value="Civics">Civics</option>
-                <option value="Economics">Economics</option>
-                <option value="First Flight">First Flight</option>
-                <option value="Footprints Without Feet">Footprints Without Feet</option>
-            </select>
-            <button class="btn-add" onclick="addChapter()">Add to Completed</button>
-        </div>
-
-        <div class="card">
-            <h3>Revision Queue 🔄</h3>
-            <ul id="revisionList"></ul>
-        </div>
+    <div class="input-card">
+        <input type="text" id="chName" placeholder="Chapter Name">
+        <select id="bkName">
+            <option value="Kshitij (Part 2)">Kshitij (Part 2)</option>
+            <option value="Kritika (Part 2)">Kritika (Part 2)</option>
+            <option value="Maths">Maths</option>
+            <option value="Science">Science</option>
+            <option value="History">History</option>
+            <option value="Geography">Geography</option>
+            <option value="Civics">Civics</option>
+            <option value="Economics">Economics</option>
+            <option value="First Flight">First Flight</option>
+            <option value="Footprints">Footprints</option>
+        </select>
+        <button class="main-btn" onclick="addChapter()">Add Chapter</button>
     </div>
+
+    <div class="list-title">My Journey</div>
+    <div id="chapterList"></div>
 </div>
 
-<button class="doubt-btn" onclick="alert('Ask me in the chat!')">💬 Ask a Doubt</button>
+<button class="doubt-fab" onclick="alert('Ask me in chat!')">Ask Doubt</button>
 
 <script>
-    // Total chapter counts for each book
-    const bookTotals = {
-        "Kshitij (Part 2)": 13,
-        "Kritika (Part 2)": 3,
-        "Mathematics (NCERT)": 14,
-        "Science (NCERT)": 13,
-        "History": 5,
-        "Geography": 7,
-        "Civics": 5,
-        "Economics": 5,
-        "First Flight": 19,
-        "Footprints Without Feet": 9
-    };
+    const totals = { "Kshitij (Part 2)": 13, "Kritika (Part 2)": 3, "Maths": 14, "Science": 13, "History": 5, "Geography": 7, "Civics": 5, "Economics": 5, "First Flight": 19, "Footprints": 9 };
+    
+    let data = JSON.parse(localStorage.getItem('study_v3')) || [];
 
-    let studyData = JSON.parse(localStorage.getItem('anmolFinalTracker')) || [];
+    function update() {
+        const list = document.getElementById('chapterList');
+        const prog = document.getElementById('progressArea');
+        list.innerHTML = '';
+        prog.innerHTML = '';
 
-    function updateUI() {
-        // 1. Update Revision List
-        const revList = document.getElementById('revisionList');
-        revList.innerHTML = '';
-        studyData.forEach((item, index) => {
-            const li = document.createElement('li');
-            if(item.revised) li.className = 'revised';
-            li.innerHTML = `
-                <div><small>${item.book}</small><br><span>${item.name}</span></div>
-                <button class="btn-revise" onclick="toggleRevise(${index})">${item.revised ? 'Undo' : 'Revised'}</button>
-            `;
-            revList.appendChild(li);
-        });
-
-        // 2. Update Progress Bars
-        const pgGrid = document.getElementById('progressGrid');
-        pgGrid.innerHTML = '';
-        
-        for (const [book, total] of Object.entries(bookTotals)) {
-            const completed = studyData.filter(d => d.book === book).length;
-            const percentage = Math.round((completed / total) * 100);
-
-            const div = document.createElement('div');
-            div.className = 'progress-card';
-            div.innerHTML = `
-                <h4>${book}</h4>
-                <div class="bar-container"><div class="bar-fill" style="width: ${percentage}%"></div></div>
-                <span class="perc-text">${percentage}% (${completed}/${total})</span>
-            `;
-            pgGrid.appendChild(div);
+        // Update Progress Bars
+        for (let b in totals) {
+            let count = data.filter(i => i.book === b).length;
+            let p = Math.round((count / totals[b]) * 100);
+            prog.innerHTML += `
+                <div class="prog-card">
+                    <div class="prog-header"><span>${b}</span><span>${count}/${totals[b]}</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width:${p}%"></div></div>
+                </div>`;
         }
 
-        localStorage.setItem('anmolFinalTracker', JSON.stringify(studyData));
+        // Update List (Reverse to show latest first)
+        [...data].reverse().forEach((item, originalIndex) => {
+            let idx = data.indexOf(item);
+            list.innerHTML += `
+                <div class="chapter-item">
+                    <div class="chapter-info">
+                        <span>${item.book}</span>
+                        <div class="chapter-name" style="${item.rev ? 'text-decoration:line-through;opacity:0.6' : ''}">${item.name}</div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-sm btn-rev ${item.rev ? 'done' : ''}" onclick="toggleRev(${idx})">${item.rev ? 'Revised' : 'Revise'}</button>
+                        <button class="btn-sm btn-del" onclick="del(${idx})">Delete</button>
+                    </div>
+                </div>`;
+        });
+        localStorage.setItem('study_v3', JSON.stringify(data));
     }
 
     function addChapter() {
-        const name = document.getElementById('chapterInput').value;
-        const book = document.getElementById('bookInput').value;
-        if(!name) return;
-        studyData.push({ name, book, revised: false });
-        document.getElementById('chapterInput').value = '';
-        updateUI();
+        const n = document.getElementById('chName').value;
+        const b = document.getElementById('bkName').value;
+        if(!n) return;
+        data.push({ name: n, book: b, rev: false });
+        document.getElementById('chName').value = '';
+        update();
     }
 
-    function toggleRevise(index) {
-        studyData[index].revised = !studyData[index].revised;
-        updateUI();
-    }
+    function toggleRev(i) { data[i].rev = !data[i].rev; update(); }
+    function del(i) { if(confirm('Delete this?')) { data.splice(i, 1); update(); } }
 
-    updateUI();
+    update();
 </script>
 
 </body>
