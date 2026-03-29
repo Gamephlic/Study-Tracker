@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 10th Master Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --study-blue: #4a90e2;
+            --study-dark: #2c3e50;
+            --success: #2ecc71;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: var(--study-dark);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: var(--glass-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        header { text-align: center; margin-bottom: 30px; }
+        
+        /* Progress Grid */
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .progress-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .progress-card h4 { margin: 0 0 10px 0; font-size: 0.85rem; color: #555; }
+        
+        .bar-container {
+            background: #eee;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            background: var(--success);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .perc-text { font-size: 12px; font-weight: bold; margin-top: 5px; display: block; }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 25px;
+        }
+
+        .card { background: #fff; padding: 20px; border-radius: 15px; border: 1px solid #eee; }
+
+        input, select {
+            width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;
+        }
+
+        .btn-add {
+            width: 100%; padding: 12px; background: var(--study-blue); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;
+        }
+
+        ul { list-style: none; padding: 0; }
+        li {
+            background: #f8f9fa; margin-bottom: 10px; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--study-blue);
+        }
+
+        .revised { border-left-color: var(--success); opacity: 0.7; }
+        .revised span { text-decoration: line-through; }
+
+        .btn-revise {
+            background: var(--success); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 11px;
+        }
+
+        .doubt-btn {
+            background: #e74c3c; color: white; padding: 15px 25px; border-radius: 50px; position: fixed; bottom: 20px; right: 20px; border: none; font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header><h1>📖 Class 10th Study Tracker</h1></header>
+
+    <div class="progress-grid" id="progressGrid">
+        </div>
+
+    <div class="main-grid">
+        <div class="card">
+            <h3>Log Chapter</h3>
+            <input type="text" id="chapterInput" placeholder="Chapter Name...">
+            <select id="bookInput">
+                <option value="Kshitij (Part 2)">Kshitij (Part 2)</option>
+                <option value="Kritika (Part 2)">Kritika (Part 2)</option>
+                <option value="Mathematics (NCERT)">Mathematics (NCERT)</option>
+                <option value="Science (NCERT)">Science (NCERT)</option>
+                <option value="History">History</option>
+                <option value="Geography">Geography</option>
+                <option value="Civics">Civics</option>
+                <option value="Economics">Economics</option>
+                <option value="First Flight">First Flight</option>
+                <option value="Footprints Without Feet">Footprints Without Feet</option>
+            </select>
+            <button class="btn-add" onclick="addChapter()">Add to Completed</button>
+        </div>
+
+        <div class="card">
+            <h3>Revision Queue 🔄</h3>
+            <ul id="revisionList"></ul>
+        </div>
+    </div>
+</div>
+
+<button class="doubt-btn" onclick="alert('Ask me in the chat!')">💬 Ask a Doubt</button>
+
+<script>
+    // Total chapter counts for each book
+    const bookTotals = {
+        "Kshitij (Part 2)": 13,
+        "Kritika (Part 2)": 3,
+        "Mathematics (NCERT)": 14,
+        "Science (NCERT)": 13,
+        "History": 5,
+        "Geography": 7,
+        "Civics": 5,
+        "Economics": 5,
+        "First Flight": 19,
+        "Footprints Without Feet": 9
+    };
+
+    let studyData = JSON.parse(localStorage.getItem('anmolFinalTracker')) || [];
+
+    function updateUI() {
+        // 1. Update Revision List
+        const revList = document.getElementById('revisionList');
+        revList.innerHTML = '';
+        studyData.forEach((item, index) => {
+            const li = document.createElement('li');
+            if(item.revised) li.className = 'revised';
+            li.innerHTML = `
+                <div><small>${item.book}</small><br><span>${item.name}</span></div>
+                <button class="btn-revise" onclick="toggleRevise(${index})">${item.revised ? 'Undo' : 'Revised'}</button>
+            `;
+            revList.appendChild(li);
+        });
+
+        // 2. Update Progress Bars
+        const pgGrid = document.getElementById('progressGrid');
+        pgGrid.innerHTML = '';
+        
+        for (const [book, total] of Object.entries(bookTotals)) {
+            const completed = studyData.filter(d => d.book === book).length;
+            const percentage = Math.round((completed / total) * 100);
+
+            const div = document.createElement('div');
+            div.className = 'progress-card';
+            div.innerHTML = `
+                <h4>${book}</h4>
+                <div class="bar-container"><div class="bar-fill" style="width: ${percentage}%"></div></div>
+                <span class="perc-text">${percentage}% (${completed}/${total})</span>
+            `;
+            pgGrid.appendChild(div);
+        }
+
+        localStorage.setItem('anmolFinalTracker', JSON.stringify(studyData));
+    }
+
+    function addChapter() {
+        const name = document.getElementById('chapterInput').value;
+        const book = document.getElementById('bookInput').value;
+        if(!name) return;
+        studyData.push({ name, book, revised: false });
+        document.getElementById('chapterInput').value = '';
+        updateUI();
+    }
+
+    function toggleRevise(index) {
+        studyData[index].revised = !studyData[index].revised;
+        updateUI();
+    }
+
+    updateUI();
+</script>
+
+</body>
+</html>
